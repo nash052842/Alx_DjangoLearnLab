@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from.import Book
+from.models import Book
 
 @admin.register(Book)
 

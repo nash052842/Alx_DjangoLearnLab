@@ -1,4 +1,4 @@
-delete.md
+
 #delete book
 from bookshelf.import Book
 Book=book.object.get("title=nineteen eighty four")
