@@ -41,3 +41,24 @@ try:
     print(f"\nLibrarian for {library_name}: {librarian.name}")
 except Librarian.DoesNotExist:
     print(f"\nNo librarian found for library '{library_name}'.")
+
+    from relationship_app.models import Author, Book, Library, Librarian
+
+# 1. Query all books by a specific author
+author = Author.objects.get(name="J.K. Rowling")
+books_by_author = Book.objects.filter(author=author)
+print(f"\nBooks by {author.name}:")
+for book in books_by_author:
+    print("-", book.title)
+
+# 2. List all books in a specific library
+library = Library.objects.get(name="Central Library")
+books_in_library = library.books.all()
+print(f"\nBooks in {library.name}:")
+for book in books_in_library:
+    print("-", book.title)
+
+# 3. Retrieve the librarian for a specific library
+librarian = Librarian.objects.get(library=library)
+print(f"\nLibrarian for {library.name}: {librarian.name}")
+
