@@ -1,33 +1,14 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 from .models import Book
 
 def list_books(request):
-    books = Book.objects.all()
-    output = ""
+    books = Book.objects.select_related('author').all()
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
-    for book in books:
-        output += f"{book.title} by {book.author.name}<br>"
-
-    return HttpResponse(output)
-
-
-from django.http import HttpResponse
-from .models import Book
-
-from django.views.generic.detail import DetailView
-from django.shortcuts import get_object_or_404
+from django.views.generic import DetailView
 from .models import Library
 
 class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['books'] = self.object.books.all()
-        return context
-
-
-
-
