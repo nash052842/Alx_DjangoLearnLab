@@ -1,1 +1,1 @@
-this is my first django project.
+this my first django project.
