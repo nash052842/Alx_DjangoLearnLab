@@ -1,13 +1,15 @@
 
-from django.contrib import admin
-from .models import Book  
+from django.db import models
+from .models import Book
 
-class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'publication_year')
-    list_filter = ('publication_year', 'author')
-    search_fields = ('title', 'author')
 
-admin.site.register(Book, BookAdmin)
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=100)
+    publication_year = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.title} by {self.author} ({self.publication_year})"
 
 
 
