@@ -15,3 +15,17 @@ class LibraryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['books'] = Book.objects.filter(library=self.object)
         return context
+
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+# Register View
+class RegisterView(CreateView):
+    template_name = 'relationship_app/register.html'
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+
+# Login and Logout will use Django's built-in class-based views
