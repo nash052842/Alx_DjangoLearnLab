@@ -20,3 +20,6 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
 ]
 
+from django.urls import path
+from django.contrib.auth.views import LoginView, LogoutView
+from . import views  # ✅ This is important
