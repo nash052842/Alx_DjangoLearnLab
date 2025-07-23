@@ -1,3 +1,4 @@
+<!-- library_detail.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
     <h1>Books Available:</h1>
     <ul>
         {% for book in books %}
-            <li>{{ book.title }} by {{ book.author.name }}</li>
+        <li>{{ book.title }} by {{ book.author.name }}</li>
         {% endfor %}
     </ul>
 </body>
