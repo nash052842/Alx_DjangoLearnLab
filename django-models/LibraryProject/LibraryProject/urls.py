@@ -18,6 +18,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from views import admin_view, librarian_view, member_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('relationship_app.urls')), 
@@ -38,4 +40,29 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('relationship_app.urls')),  # 👈 include app URLs
+]
+
+
+
+from django.urls import path
+from.views import list_books, LibraryDetailView
+
+urlpatterns = [
+    path('', list_books, name='list_books'),
+    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
+]
+
+
+urlpatterns = [
+    path('admin-page/', admin_view.admin_view, name='admin_view'),
+    path('librarian-page/', librarian_view.librarian_view, name='librarian_view'),
+    path('member-page/', member_view.member_view, name='member_view'),
+]
+
+from django.urls import path
+from .views import list_books, LibraryDetailView  # ✅ Proper import
+
+urlpatterns = [
+    path('books/', list_books, name='list_books'),
+    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
 ]

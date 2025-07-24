@@ -1,3 +1,4 @@
+from django.views import View
 from .models import Library
 from django.views.generic.detail import DetailView
 from django.shortcuts import render
@@ -61,6 +62,18 @@ def register(request):
     return render(request, 'relationship_app/register.html', {'form': form})
 
 
+class LibraryDetailView(View):
+    ...
+
+
+from django.shortcuts import render
+from django.views import View
+
+def list_books(request):
+    return render(request, "books.html")
+
+class LibraryDetailView(View):
+    pass
 
 
 
