@@ -17,7 +17,7 @@ from django.contrib.auth.models import AbstractUser
 
 from django.db import models
 
-class customUser(AbstractUser):
+class CustomUser(AbstractUser):
     date_of_birth=model.IntegerField()
     profile_photo =model.ImageField(upload_to=None, height_field=None, width_field=None, max_length=None)mmage_field
 def __str__(self):
@@ -25,11 +25,9 @@ def __str__(self):
     return self.username
 
 
-from django.contrib.auth.models import BaseUserManager
-
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
