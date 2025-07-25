@@ -28,7 +28,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy
 
 class CustomerUserManager(BaseUserManager):
-    
+
     use_in_migration=True
 def create__user(self,username,email,=none,password=none ** extra_field):
     if its not username:
@@ -38,7 +38,7 @@ def create__user(self,username,email,=none,password=none ** extra_field):
     User.set_password
     User.save (using=self._db)
     return User
-def create superUser(Self,Username,email=none,password=none,**extra_field)
+def create_superUser(Self,Username,email=none,password=none,**extra_field)
     extra_field.setdefult("is staff,True")
     extra_fields.setdefault("is_superuser,"True)
     extra_fields.setdefault("is_active,"True)
