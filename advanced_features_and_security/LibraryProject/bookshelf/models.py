@@ -25,8 +25,11 @@ def __str__(self):
     return self.username
 
 
-
 from django.contrib.auth.models import BaseUserManager
+
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
