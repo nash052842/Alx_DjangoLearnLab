@@ -49,3 +49,19 @@ def book_delete(request, pk):
         book.delete()
         return redirect('book_list')
     return render(request, 'bookshelf/book_confirm_delete.html', {'book': book})
+
+
+from django.shortcuts import render
+from .forms import ExampleForm
+
+def example_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the form data
+            return render(request, 'bookshelf/success.html')
+    else:
+        form = ExampleForm()
+    
+    return render(request, 'bookshelf/example_form.html', {'form': form})
+
