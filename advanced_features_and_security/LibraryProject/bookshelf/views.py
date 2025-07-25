@@ -30,5 +30,4 @@ class CustomUserAdmin(UserAdmin):
 
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'date_of_birth')
     search_fields = ('username', 'email', 'first_name', 'last_name')
-
-    admin.site.register(CustomUser,CustomUserAdmin)
+    admin.site.register = (CustomUser,CustomUserAdmin)
