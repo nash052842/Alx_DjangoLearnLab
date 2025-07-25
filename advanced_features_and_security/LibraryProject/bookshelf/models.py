@@ -27,7 +27,8 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy
 
-class customerUsermanager(BaseUserManager):
+class CustomerUserManager(BaseUserManager):
+    
     use_in_migration=True
 def create__user(self,username,email,=none,password=none ** extra_field):
     if its not username:
