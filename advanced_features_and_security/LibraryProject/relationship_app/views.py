@@ -146,23 +146,16 @@ def delete_book(request, pk):
 
 
 
-# accounts/admin.py
+from django.shortcuts import render
+from .models import Book
+from .forms import BookSearchForm
 
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+def book_search(request):
+    form = BookSearchForm(request.GET or None)
+    books = Book.objects.none()
+    
+    if form.is_valid():
+        query = form.cleaned_data['title']
+        books = Book.objects.filter(title__icontains=query)  # Safe query
 
-class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-
-    fieldsets = UserAdmin.fieldsets + (
-        (_('Additional Info'), {'fields': ('date_of_birth', 'profile_photo')}),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (_('Additional Info'), {'fields': ('date_of_birth', 'profile_photo')}),
-    )
-
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'date_of_birth')
-    search_fields = ('username', 'email', 'first_name', 'last_name')
-
-admin.site.register(CustomUser, CustomUserAdmin)
+    return render(request, 'bookshelf/book_search.html', {'form': form, 'books': books})

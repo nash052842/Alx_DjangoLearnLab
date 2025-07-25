@@ -23,9 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c=nl%05*gsc4%+sg^5c8jfs_%b46f&(d66&b-9k(84zex#157c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [bookshelf domain,com]
+SECURE_BROWSER_XSS_FILTER = True  # Enable XSS protection
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME type sniffing
+X_FRAME_OPTIONS = 'DENY'  # Prevent
+# SECURITY: HTTPS settings (only effective if HTTPS is enabled)
+CSRF_COOKIE_SECURE = True  # Only send CSRF cookie over HTTPS
+SESSION_COOKIE_SECURE = True  # Only send session cookie over HTTPS
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
 
 
 # Application definition
@@ -42,6 +49,10 @@ INSTALLED_APPS = [
     'AUTH_USER_MODEL = 'bookshelf.CustomUser'
 ',
 ]
+# CONTENT SECURITY POLICY (CSP)
+# If using django-csp
+INSTALLED_APPS += ['csp']
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,7 +62,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'csp.middleware.CSPMiddleware',
+    ]
+
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
