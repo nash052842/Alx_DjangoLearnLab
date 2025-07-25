@@ -49,3 +49,48 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(email, password, **extra_fields)
+
+
+
+
+
+from django.contrib.auth.models import Permission
+class Meta:
+    Permission=[ 
+            ("can_view", "Can view book"),
+            ("can_create", "Can create book"),
+            ("can_edit", "Can edit book"),
+            ("can_delete", "Can delete book"),
+        ]
+    
+def __str_(self):
+    return self.title
+class Command(BaseCommad)
+    help = "Sets up user groups and assigns permissions."
+    # 📁 management/commands/setup_groups.py
+
+from django.core.management.base import BaseCommand
+from django.contrib.auth.models import Group, Permission
+from django.apps import apps
+
+class Command(BaseCommand):
+    help = "Sets up user groups and assigns permissions."
+
+    def handle(self, *args, **kwargs):
+        book_model = apps.get_model('bookshelf', 'Book')
+
+        perms = {
+            "Viewers": ["can_view"],
+            "Editors": ["can_view", "can_create", "can_edit"],
+            "Admins": ["can_view", "can_create", "can_edit", "can_delete"],
+        }
+
+        for group_name, codename_list in perms.items():
+            group, created = Group.objects.get_or_create(name=group_name)
+            group.permissions.clear()
+            for codename in codename_list:
+                permission = Permission.objects.get(codename=codename, content_type__app_label="bookshelf")
+                group.permissions.add(permission)
+
+        self.stdout.write(self.style.SUCCESS("Groups and permissions successfully set up."))
+
