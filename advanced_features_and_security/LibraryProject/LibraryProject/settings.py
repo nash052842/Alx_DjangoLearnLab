@@ -34,6 +34,26 @@ CSRF_COOKIE_SECURE = True  # Only send CSRF cookie over HTTPS
 SESSION_COOKIE_SECURE = True  # Only send session cookie over HTTPS
 SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
 
+# Redirect all HTTP to HTTPS (turn on in production only)
+SECURE_SSL_REDIRECT = False  # Change to True in production
+
+# HTTP Strict Transport Security
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Cookies should only be sent via HTTPS
+SESSION_COOKIE_SECURE = False  # Change to True in production
+CSRF_COOKIE_SECURE = False     # Change to True in production
+
+# Security headers
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+
+# Needed if using a reverse proxy like Nginx
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
 
