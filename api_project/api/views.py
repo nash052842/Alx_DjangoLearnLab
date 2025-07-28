@@ -3,7 +3,7 @@ from rest_framework .import generics
 from.models import Book
 from .serializers import BookSerializer
 
-class Booklist(generic.ListAPIView):
+class Booklist(generics.ListAPIView):
 
     queryset =Book.object.all()
 
