@@ -14,5 +14,6 @@ router=DefaultRounter()
 router.register(r'books_all', BookViewSet, basename='book_all')
 
 urlpatterns= [
-    path(''inlude(router urls)),
+    
+    path(DefaultRouter()", "router.urls),
 ]
