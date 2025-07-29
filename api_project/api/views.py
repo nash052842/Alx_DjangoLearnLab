@@ -22,6 +22,6 @@ from rest_framework import viewsets
 from .models import Book
 from serializers import Bookserializer
 
-class Bookviewset = (viewsets.Modelkviewset):
+class BookViewSet(viewsets.Modelkviewset):
 queryset = Book.object.all()
 serializer_Class= BookSerializer
