@@ -23,5 +23,5 @@ from .models import Book
 from serializers import Bookserializer
 
 class BookViewSet(viewsets.Modelkviewset):
-queryset = Book.object.all()
+queryset = Book.objects.all()
 serializer_Class= BookSerializer
