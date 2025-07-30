@@ -34,6 +34,27 @@ REST_FRAMEWORK = {
     ]
 }
 
+
+from rest_framework.permissions import IsAuthenticated
+
+class Booklist(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes=(IsAuthenticated)
+    queryset=Book.object.all()
+    serializer_class= BookSerializer
+    name=BookList
+
+
+from rest_framework.permissions import IsAdminUser
+
+class Booklist(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes=(IsAdminUser)
+    queryset=Book.object.all()
+    serializer_class= BookSerializer
+    name=BookList
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
