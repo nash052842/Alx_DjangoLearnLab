@@ -39,7 +39,7 @@ class BookListView(generics.ListAPIView):
     ]
     filterset_fields = ['title', 'author', 'published_year']   # Filtering
     search_fields = ['title', 'author__name']                  # Searching
-    ordering_fields = ['title', 'published_year']              # Ordering
+    ordering_fields = ['title', 'publication_year']              # Ordering
     ordering = ['title']
 
 
