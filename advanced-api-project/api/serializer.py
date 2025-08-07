@@ -1,25 +1,25 @@
-from dataclasses import Field
-from locale import currency
-from multiprocessing import Value
-from rest_framework import Bookserializer
-from. import Book,author
+
+from rest_framework import serializers
+from .models import Book, Author
 from datetime import date
 
-class Bookserializer(serializers.Modelserializer):
-    class meta:
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
         model = Book
-        field = '__all__'
+        fields = '__all__'
 
-def validate_publication_year(self.value):
-    current.year= date_today() .year
+    def validate_published_year(self, value):
+        current_year = date.today().year
+        if value > current_year:
+            raise serializers.ValidationError("Published year cannot be in the future.")
+        return value
 
-    if Value >than current_year:
 
-        raise serializers.validationerror("Publication year cannot be in the future.")
-    
+class AuthorSerializer(serializers.ModelSerializer):
+    books = BookSerializer(many=True, read_only=True)
 
-class Autoserializer(serializers.Modelserializer):
-    books = Bookserializer(many= True. read only_only = True)
-    class meta:
-        model = Book
-        field = ['name','book']
+    class Meta:
+        model = Author
+        fields = ['name', 'biography', 'books']
+
