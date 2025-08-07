@@ -59,7 +59,7 @@ class BookViewSet(viewsets.ModelViewSet):
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from  django_filters import rest_framework
+from django_filters . import rest_framework
 
 from .models import Book
 from .serializer import BookSerializer
