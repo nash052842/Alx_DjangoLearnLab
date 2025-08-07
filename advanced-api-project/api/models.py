@@ -1,18 +1,13 @@
-from django.db import models  
-
+from django.db import models
 
 class Author(models.Model):
-    name = models.CharField(max_length=100)
-    biography = models.TextField()
+    Author = models.CharField(max_length=100)
+def __str__(self.name)
+    return self.name
 
-    def __str__(self):
-        return self.name
-
-
-class Book(models.Model):
-    title = models.CharField(max_length=200)
-    published_year = models.IntegerField()
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
-
-    def __str__(self):
-        return self.title
+class Book(models.Models):
+    title = models.CharField(max_length=255)
+    author = models.ForeignKeyOneToMany(author_on_delete= models.CASCADE,related_name='book')
+    publication_year=models.IntegerField()
+def __str__(self):
+    return self.title
