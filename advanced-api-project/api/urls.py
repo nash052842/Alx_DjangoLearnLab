@@ -25,5 +25,5 @@ router = DefaultRouter()
 router.register(r'books', BookViewSet, basename='book')
 
 urlpatterns = [
-    path('api/', include(router.urls)),  # This makes routes like /api/books/
+    path('', include(router.urls)), 
 ]

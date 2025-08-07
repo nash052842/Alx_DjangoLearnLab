@@ -59,6 +59,7 @@ class BookViewSet(viewsets.ModelViewSet):
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 from .models import Book
 from .serializer import BookSerializer
 
@@ -66,7 +67,10 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    # Add support for filtering, searching, and ordering
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['published_year']
-    search_fields = ['title']
-    ordering_fields = ['published_year']
+
+    filterset_fields = ['published_year']      # e.g., ?published_year=2020
+    search_fields = ['title']                  # e.g., ?search=Homage
+    ordering_fiel_
