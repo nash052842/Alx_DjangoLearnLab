@@ -1,5 +1,5 @@
-#from django.urls import path, include
-#from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from .views import (
     BookViewSet,
     BookListView,
@@ -9,17 +9,17 @@ from .views import (
     BookDeleteView,
 )
 
-#router = DefaultRouter()
-#router.register(r'books', BookViewSet, basename='book')
+router = DefaultRouter()
+router.register(r'books', BookViewSet, basename='book')
 
-#urlpatterns = [
+urlpatterns = [
     path('', include(router.urls)),
     # Optional: Explicit class-based views (only if you need them for other purposes)
     path('books/', BookListView.as_view(), name='book-list-cbv'),
-    path('books/create/', BookCreateView.as_view(), name='book-create-cbv'),
-    path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail-cbv'),
-    path('books/<int:pk>/update/', BookUpdateView.as_view(), name='book-update-cbv'),
-    path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book-delete-cbv'),
+    path('books/create/', BookCreateView.as_view(), name='books-create-cbv'),
+    path('books/<int:pk>/', BookDetailView.as_view(), name='books-detail-cbv'),
+    path('books/<int:pk>/update/', BookUpdateView.as_view(), name='books-update-cbv'),
+    path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='books-delete-cbv'),
 ]
 
 
