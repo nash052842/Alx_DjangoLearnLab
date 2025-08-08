@@ -41,9 +41,7 @@ INSTALLED_APPS = [
     'api',
     'django_filters',
 ]
-    
-    
-]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
