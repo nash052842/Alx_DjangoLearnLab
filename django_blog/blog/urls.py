@@ -1,5 +1,15 @@
 from django.urls import path
-from . import views
+from . import views (
+    PostListView,
+    PostDetailView,
+    PostCreateView,
+    PostUpdateView,
+    PostDeleteView,
+    CommentCreateView,
+    CommentUpdateView,
+    CommentDeleteView,
+)
+
 
 urlpatterns = [
     # ---------- AUTH ROUTES ----------
