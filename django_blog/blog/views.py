@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 
 from .forms import CustomUserCreationForm, CommentForm
-from .blog.models import Post
+from .models import Post
 
 
 # ---------- AUTH VIEWS ----------

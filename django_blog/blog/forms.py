@@ -1,8 +1,9 @@
 from django import forms
+from .models import Post, Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .blog.models import Post
 
+# Your form classes here
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, help_text="Required. Provide a valid email address.")
@@ -27,13 +28,14 @@ class commentForm(forms.ModelForm):
 
 
 from django import forms
-from .blog.models import Comment
+from .models import Post
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']  # only let users type the content
         widgets = {
-            'content': forms.Text_area(attrs={'rows': 3, 'placeholder': 'Write your comment here...'}),
+            'content': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Write your comment here...'}),
         }
 
