@@ -83,7 +83,7 @@ class PostDetailView(DetailView):
         context['comments'] = self.object.comment_set.all()
         return context
 
-    def post(self, request, *args, **kwargs):
+    #def post(self, request, *args, **kwargs):
         post = self.get_object()
         form = CommentForm(request.POST)
         if form.is_valid():
