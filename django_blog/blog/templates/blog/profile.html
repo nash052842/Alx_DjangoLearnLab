@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+<h2>Your Profile</h2>
+
+<form method="POST" novalidate>
+    {% csrf_token %}
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ user.email }}" required>
+    <button type="submit">Update Profile</button>
+</form>
+
+{% for message in messages %}
+    <p>{{ message }}</p>
+{% endfor %}
+
+<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}
