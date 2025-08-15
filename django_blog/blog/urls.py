@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views (
+from .views import (
     PostListView,
     PostDetailView,
     PostCreateView,
@@ -8,27 +8,50 @@ from . import views (
     CommentCreateView,
     CommentUpdateView,
     CommentDeleteView,
+    register_view,
+    login_view,
+    logout_view,
+    profile_view,
 )
-
 
 urlpatterns = [
     # ---------- AUTH ROUTES ----------
-    path('register/', views.register_view, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('profile/', views.profile_view, name='profile'),
+    path('register/', register_view, name='register'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('profile/', profile_view, name='profile'),
 
     # ---------- BLOG POST ROUTES ----------
-    path('', views.PostListView.as_view(), name='post-list'),  # List all posts
-    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),  # View one post
-    path('post/new/', views.PostCreateView.as_view(), name='post-create'),  # Create a post
-    path('post/<int:pk>/update/', views.PostUpdateView.as_view(), name='post-update'),  # Update a post
-    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'),  # Delete a post
+    path('', PostListView.as_view(), name='post-list'),  # List all posts
+    path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),  # View one post
+    path('post/new/', PostCreateView.as_view(), name='post-create'),  # Create a post
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),  # Update a post
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),  # Delete a post
 
-    # Comment URLs
+    # ---------- COMMENT ROUTES ----------
     path('post/<int:post_pk>/comment/new/', CommentCreateView.as_view(), name='comment-create'),
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
-    # This is the new URL to add for comment creation
-    path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='comment-create'),
 ]
+
+
+from .views import SearchResultsView
+from taggit.views import TaggedObjectList
+
+urlpatterns += [
+    path('search/', SearchResultsView.as_view(), name='post-search'),
+    path('tags/<slug:tag>/', PostListView.as_view(), name='posts-by-tag'),
+]
+
+def get_queryset(self):
+    tag = self.kwargs.get('tag')
+    if tag:
+        return Post.objects.filter(tags__name__in=[tag])
+    return Post.objects.all().order_by('-published_date')
+
+from .views import TaggedPostListView
+
+urlpatterns = [
+    path('tags/<slug:slug>/', TaggedPostListView.as_view(), name='posts-by-tag'),
+]
+
