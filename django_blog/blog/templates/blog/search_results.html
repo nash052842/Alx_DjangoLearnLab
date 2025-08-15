@@ -1,14 +1,14 @@
-{% extends 'blog/base.html' %}
+{% extends "blog/base.html" %}
 {% block content %}
-    <h2>Search Results</h2>
-    {% if posts %}
-        {% for post in posts %}
-            <div>
-                <h3><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h3>
-                <p>{{ post.content|truncatewords:30 }}</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No results found.</p>
-    {% endif %}
+  <h2>Search Results for "{{ query }}"</h2>
+
+  {% if results %}
+    <ul>
+      {% for post in results %}
+        <li><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No results found.</p>
+  {% endif %}
 {% endblock %}

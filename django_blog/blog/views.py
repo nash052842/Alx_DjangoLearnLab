@@ -8,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
 from .models import Post, Comment
 from .forms import CustomUserCreationForm, CommentForm
+from django.db.models import Q
+
 
 # ---------- AUTH VIEWS ----------
 def register_view(request):
@@ -187,3 +189,22 @@ class TaggedPostListView(ListView):
         context = super().get_context_data(**kwargs)
         context['tag'] = self.tag
         return context
+
+from django.shortcuts import render
+from .models import Post
+
+def search_posts(request):
+    query = request.GET.get("q")
+    results = []
+
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+
+    return render(request, "blog/search_results.html", {
+        "query": query,
+        "results": results
+    })
