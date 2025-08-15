@@ -34,3 +34,9 @@
     <input type="text" name="q" placeholder="Search posts..." required>
     <button type="submit">Search</button>
 </form>
+
+<p>Tags:
+  {% for tag in post.tags.all %}
+    <a href="{% url 'posts-by-tag' tag.slug %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+  {% endfor %}
+</p>
