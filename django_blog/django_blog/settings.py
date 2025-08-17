@@ -84,6 +84,16 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'united_nations',
+        'USER': 'root',
+        'PASSWORD':'shem',
+        'HOST': 'localhost',
+        'PORT': '3306',  
+    }
+}
 
 
 
