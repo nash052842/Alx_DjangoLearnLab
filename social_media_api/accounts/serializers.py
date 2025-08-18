@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework import serializers
 from .models import CustomUser
-
+from rest_framework_simplejwt.tokens import RefreshToken
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -26,4 +26,4 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'bio', 'picture', 'followers']
+        fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'followers']
