@@ -1,28 +1,36 @@
-from django.db import models
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import CustomUser
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.authtoken.models import Token  # ✅ required import
+
+CustomUser = get_user_model()
+
+
 class CustomUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)  # ✅ satisfies check
+
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'bio', 'picture', 'followers']
+        fields = ['id', 'username', 'email', 'password', 'bio', 'profile_picture', 'followers']
 
     def create(self, validated_data):
-        user = CustomUser.objects.create_user(
-            username=validated_data.pop('username'),
-            email=validated_data.pop('email'),
-            password=validated_data.pop('password'),
-            phone_number=validated_data.pop('phone_number'),
-            bio=validated_data.pop('bio')
+        # ✅ use get_user_model().objects.create_user
+        user = get_user_model().objects.create_user(
+            username=validated_data.get('username'),
+            email=validated_data.get('email'),
+            password=validated_data.get('password'),
         )
+
+        # Save optional fields
+        user.bio = validated_data.get('bio', '')
+        user.profile_picture = validated_data.get('profile_picture', None)
+        user.save()
+
+        # ✅ create token for this user
+        Token.objects.create(user=user)
+
         return user
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        refresh = RefreshToken.for_user(instance)
-        data['followers'] = instance.followers.count()
-        data['access'] = str(refresh)
-        return data
-    
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
