@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 CustomUser = get_user_model()
 
 
-class CustomUserSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(serializers.CharField):
     password = serializers.CharField(write_only=True)  
 
     class Meta:
