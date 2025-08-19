@@ -1,4 +1,5 @@
 from rest_framework.routers import DefaultRouter
+from .views import PostViewSet,CommentViewSet
 from django.urls import path
 from .views import (
     ProfileView,
@@ -10,7 +11,11 @@ from .views import (
 
 router = DefaultRouter()
 router.register(r'users', CustomUserViewSet)  
-router.register(r'auth', loginViewSet, basename='auth')  
+router.register(r'auth', loginViewSet, basename='auth') 
+router.register(r'posts', PostViewSet, basename='post') 
+router.register(r'comments', CommentViewSet, basename='comment')
+
+
 
 urlpatterns = router.urls + [
     path('users/<int:pk>/followers/', FollowUserView.as_view(), name='follow-user'),

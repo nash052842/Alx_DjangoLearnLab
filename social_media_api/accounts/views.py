@@ -9,9 +9,24 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from .serializers import CustomUserSerializer, UserProfileSerializer
+from .serializers import CommentSerializer, CustomUserSerializer, UserProfileSerializer
+from .serializers import PostSerializer
 from rest_framework import viewsets
-from .models import CustomUser
+from .models import CustomUser, Post, Comment
+from rest_framework import permissions
+
+# Define IsOwnerOrReadOnly permission
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        # Write permissions are only allowed to the owner of the object.
+        return obj.owner == request.user
 
 
 class CustomUserViewSet(viewsets.ModelViewSet):
@@ -60,3 +75,46 @@ class UnfollowUserView(APIView):
             return Response({"message": f"You unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
         except get_user_model().DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+class PostDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+
+    def put(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        serializer = PostSerializer(post, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        post.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def get_queryset(self):
+        post = self.kwargs.get('post_id')
+        return Comment.objects.filter(post=post)
+    
