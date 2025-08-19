@@ -18,4 +18,5 @@ urlpatterns = router.urls + [
     path('users/me/', ProfileView.as_view(), name='user-profile'),
     path('users/login/', loginViewSet.as_view({'post': 'create'}), name='user-login'),
     path('users/logout/', loginViewSet.as_view({'post': 'destroy'}), name='user-logout'),
+    path('users/register/', CustomUserViewSet.as_view({'post': 'create'}), name='user-register'),
 ]
