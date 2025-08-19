@@ -13,6 +13,10 @@ from .serializers import PostSerializer
 from rest_framework import viewsets
 from .models import CustomUser, Post, Comment
 from rest_framework import permissions
+from rest_framework import generics, status
+from .serializers import CustomUserSerializer
+from .models import CustomUser
+
 
 # Define IsOwnerOrReadOnly permission
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -116,4 +120,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         post = self.kwargs.get('post_id')
         return Comment.objects.filter(post=post)
+    
+class RegisterView(generics.GenericAPIView):
+    serializer_class = CustomUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
