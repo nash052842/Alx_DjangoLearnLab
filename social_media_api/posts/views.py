@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 from posts.models import Post
+from posts.notification.models import Notification
 from posts.serializers import PostSerializer
 from .models import Comment, Post
 from .permissions import IsOwnerOrReadOnly
@@ -48,3 +49,15 @@ class FeedView(APIView):
             serializer.save(author=request.user)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
+
+
+# posts/views.py
+
+def perform_create(self, serializer):
+    comment = serializer.save(author=self.request.user)
+    Notification.objects.create(
+        recipient=comment.post.author,
+        sender=self.request.user,
+        notification_type='comment',
+        post=comment.post
+    )
