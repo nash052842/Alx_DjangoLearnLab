@@ -15,6 +15,11 @@ from posts.permissions import IsOwnerOrReadOnly
 from notifications.models import Notification
 from notifications.utils import create_notification
 
+from rest_framework import generics  # ✅ Import DRF's generics
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -78,3 +83,27 @@ def unlike_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     Like.objects.filter(user=request.user, post=post).delete()
     return redirect('post_detail', pk=pk)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    post = generics.get_object_or_404(Post, pk=pk)  
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    if created and post.author != request.user:
+        create_notification(
+            recipient=post.author,
+            actor=request.user,
+            verb="liked your post",
+            target=post
+        )
+    return Response({'message': 'Post liked'}, status=200)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, pk):
+    post = generics.get_object_or_404(Post, pk=pk)  
+    Like.objects.filter(user=request.user, post=post).delete()
+    return Response({'message': 'Post unliked'}, status=200)
+
