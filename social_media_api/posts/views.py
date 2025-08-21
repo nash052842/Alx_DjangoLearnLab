@@ -5,12 +5,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 from posts.models import Post
-from posts.notification.models import Notification
 from posts.serializers import PostSerializer
 from .models import Comment, Post
 from .permissions import IsOwnerOrReadOnly
 from .serializers import CommentSerializer, PostSerializer
+from notifications.models import Notification
+from notifications.utils import create_notification
 
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -61,3 +64,44 @@ def perform_create(self, serializer):
         notification_type='comment',
         post=comment.post
     )
+
+
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Post, Like
+from notifications.utils import create_notification  # You'll define this next
+
+@login_required
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    if created:
+        if post.author != request.user:
+            create_notification(
+                recipient=post.author,
+                actor=request.user,
+                verb="liked your post",
+                target=post
+            )
+    return redirect('post_detail', pk=pk)
+
+@login_required
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    if created:
+        if post.author != request.user:
+            create_notification(
+                recipient=post.author,
+                actor=request.user,
+                verb="liked your post",
+                target=post
+            )
+    return redirect('post_detail', pk=pk)
+
+@login_required
+def unlike_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    Like.objects.filter(user=request.user, post=post).delete()
+    return redirect('post_detail', pk=pk)
